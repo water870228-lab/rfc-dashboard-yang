@@ -1,1 +1,482 @@
-# rfc-dashboard-yang
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>財務健康度診斷表 | RFC國際認證財務顧問專用</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 引入 Google Fonts 高級鋼筆草寫字體 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#0B2341',
+                            gold: '#B89B5E',
+                            gray: '#F5F6F8',
+                            light: '#FFFFFF'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Helvetica Neue"', 'Helvetica', 'Arial', '"PingFang TC"', '"Heiti TC"', '"Microsoft JhengHei"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'Georgia', 'serif'],
+                        signature: ['"Great Vibes"', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        
+        .form-input {
+            @apply w-full bg-transparent border-b border-brand-blue/30 text-brand-blue focus:border-brand-gold focus:outline-none transition-colors text-[13px];
+            padding: 4px 16px 4px 0;
+            line-height: 1.2;
+        }
+        
+        .section-title {
+            @apply text-lg font-serif text-brand-blue border-b-2 border-brand-gold pb-1.5 flex items-center justify-between font-bold;
+        }
+
+        .a4-page {
+            width: 794px !important;
+            height: 1123px !important;
+            min-width: 794px !important;
+            min-height: 1123px !important;
+            max-width: 794px !important;
+            max-height: 1123px !important;
+            margin: 0 auto 24px auto;
+            background-color: #ffffff;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 12mm 20mm;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-container {
+            width: 100%;
+            overflow-x: auto;
+            padding: 20px 10px;
+            background-color: #E5E7EB;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .custom-box {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 15px;
+            height: 15px;
+            border: 1px solid rgba(11, 35, 65, 0.3);
+            background-color: white;
+            border-radius: 3px;
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .custom-box:checked {
+            background-color: #B89B5E;
+            border-color: #B89B5E;
+        }
+        .custom-box:checked::after {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 1px;
+            width: 5px;
+            height: 9px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        .custom-box.radio { border-radius: 50%; }
+        .custom-box.radio:checked::after {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 4px;
+            width: 5px;
+            height: 5px;
+            background: white;
+            border-radius: 50%;
+            border: none;
+            transform: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-200 text-brand-blue font-sans antialiased min-h-screen">
+
+    <div class="page-container" id="pdf-wrapper">
+        
+        <!-- ======================= -->
+        <!-- 第一頁 PAGE 1 -->
+        <!-- ======================= -->
+        <div class="a4-page" id="page-1">
+            
+            <header class="flex justify-between items-end border-b-[3px] border-brand-blue pb-3 mb-5 shrink-0">
+                <div>
+                    <h1 class="text-[32px] leading-tight font-bold tracking-widest text-brand-blue font-serif">財務健康度診斷表</h1>
+                    <p class="text-[11px] text-brand-gold mt-1 tracking-widest uppercase font-bold">Financial Health Assessment</p>
+                </div>
+                
+                <div class="flex items-center pb-1">
+                    <img src="./rfc-logo.png" alt="RFC Logo" class="h-14 w-auto mr-3 object-contain" onerror="this.style.display='none'">
+                    
+                    <div class="text-right">
+                        <p class="text-xl font-bold text-brand-blue tracking-wide">RFC國際認證財務顧問專用</p>
+                        <p class="text-[13px] text-brand-blue/70 mt-1.5 tracking-widest font-medium">專業 ‧ 客觀 ‧ 以客戶為中心</p>
+                    </div>
+                </div>
+            </header>
+
+            <section class="mb-5 shrink-0">
+                <h2 class="section-title mb-3">01 / 客戶基本資料</h2>
+                <div class="grid grid-cols-2 gap-x-12 gap-y-3">
+                    <div class="flex items-center"><label class="w-16 text-sm text-brand-blue/80">姓名</label><input type="text" class="form-input flex-1 !pr-2"></div>
+                    <div class="flex items-center"><label class="w-16 text-sm text-brand-blue/80">出生日期</label><input type="date" class="form-input flex-1 text-brand-blue/80 !pr-2"></div>
+                    <div class="flex items-center"><label class="w-16 text-sm text-brand-blue/80">職業</label><input type="text" class="form-input flex-1 !pr-2"></div>
+                    <div class="flex items-center">
+                        <label class="w-16 text-sm text-brand-blue/80">婚姻</label>
+                        <div class="flex-1 flex space-x-4 items-center h-full">
+                            <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="marital" class="custom-box radio"><span class="text-sm">單身</span></label>
+                            <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="marital" class="custom-box radio"><span class="text-sm">已婚</span></label>
+                            <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="marital" class="custom-box radio"><span class="text-sm">其他</span></label>
+                        </div>
+                    </div>
+                    <div class="flex items-center"><label class="w-16 text-sm text-brand-blue/80">子女數</label><input type="number" class="form-input flex-1 !pr-2"></div>
+                    <div class="flex items-center"><label class="w-16 text-sm text-brand-blue/80">諮詢日期</label><input type="date" class="form-input flex-1 text-brand-blue/80 !pr-2"></div>
+                </div>
+            </section>
+
+            <section class="mb-5 shrink-0">
+                <h2 class="section-title mb-3">02 / 人生目標規劃 <span class="text-[11px] font-sans text-brand-blue/50 uppercase tracking-widest font-normal">Life Goals</span></h2>
+                <div class="grid grid-cols-3 gap-8">
+                    <div class="space-y-2.5">
+                        <h3 class="font-bold text-[13px] text-brand-gold border-b border-brand-gold/30 pb-1.5 mb-3">短期目標 (1-3年)</h3>
+                        <label class="flex items-center space-x-2"><input type="checkbox" class="custom-box"><span class="text-sm text-brand-blue/90">購屋 / 換屋</span></label>
+                        <label class="flex items-center space-x-2"><input type="checkbox" class="custom-box"><span class="text-sm text-brand-blue/90">換車 / 購車</span></label>
+                        <label class="flex items-center space-x-2"><input type="checkbox" class="custom-box"><span class="text-sm text-brand-blue/90">結婚 / 生育</span></label>
+                        <div class="flex items-center space-x-2 pt-1">
+                            <input type="checkbox" class="custom-box"><span class="text-sm shrink-0">其他</span>
+                            <input type="text" class="form-input !border-brand-blue/20 !py-0 !pr-2">
+                        </div>
+                    </div>
+                    <div class="space-y-2.5">
+                        <h3 class="font-bold text-[13px] text-brand-gold border-b border-brand-gold/30 pb-1.5 mb-3">中期目標 (3-10年)</h3>
+                        <label class="flex items-center space-x-2"><input type="checkbox" class="custom-box"><span class="text-sm text-brand-blue/90">子女教育金</span></label>
+                        <label class="flex items-center space-x-2"><input type="checkbox" class="custom-box"><span class="text-sm text-brand-blue/90">第二戶房產</span></label>
+                        <label class="flex items-center space-x-2"><input type="checkbox" class="custom-box"><span class="text-sm text-brand-blue/90">資產擴大累積</span></label>
+                        <div class="flex items-center space-x-2 pt-1">
+                            <input type="checkbox" class="custom-box"><span class="text-sm shrink-0">其他</span>
+                            <input type="text" class="form-input !border-brand-blue/20 !py-0 !pr-2">
+                        </div>
+                    </div>
+                    <div class="space-y-2.5">
+                        <h3 class="font-bold text-[13px] text-brand-gold border-b border-brand-gold/30 pb-1.5 mb-3">長期目標 (10年以上)</h3>
+                        <label class="flex items-center space-x-2"><input type="checkbox" class="custom-box"><span class="text-sm text-brand-blue/90">退休生活準備</span></label>
+                        <label class="flex items-center space-x-2"><input type="checkbox" class="custom-box"><span class="text-sm text-brand-blue/90">財富傳承 / 節稅</span></label>
+                        <label class="flex items-center space-x-2"><input type="checkbox" class="custom-box"><span class="text-sm text-brand-blue/90">被動收入建構</span></label>
+                        <div class="flex items-center space-x-2 pt-1">
+                            <input type="checkbox" class="custom-box"><span class="text-sm shrink-0">其他</span>
+                            <input type="text" class="form-input !border-brand-blue/20 !py-0 !pr-2">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-5 shrink-0">
+                <h2 class="section-title mb-3">03 / 財商四象限定位 <span class="text-[11px] font-sans text-brand-blue/50 uppercase tracking-widest font-normal">Financial IQ</span></h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="border border-brand-blue/10 p-3 rounded-md bg-gray-50/80">
+                        <div class="flex items-center space-x-2 mb-2.5"><h3 class="font-bold text-brand-blue text-[15px]">1. 財富累積力</h3><span class="text-[10px] text-brand-gold border border-brand-gold/50 px-1.5 py-0.5 rounded">將收入轉為資產</span></div>
+                        <div class="flex space-x-5">
+                            <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q1" class="custom-box radio"><span class="text-[13px]">已建立</span></label>
+                            <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q1" class="custom-box radio"><span class="text-[13px]">建立中</span></label>
+                            <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q1" class="custom-box radio"><span class="text-[13px]">未建立</span></label>
+                        </div>
+                    </div>
+                    <div class="border border-brand-blue/10 p-3 rounded-md bg-gray-50/80">
+                        <div class="flex items-center space-x-2 mb-2.5"><h3 class="font-bold text-brand-blue text-[15px]">2. 資產配置力</h3><span class="text-[10px] text-brand-gold border border-brand-gold/50 px-1.5 py-0.5 rounded bg-white">優先購買資產</span></div>
+                        <div class="flex space-x-5">
+                            <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q2" class="custom-box radio"><span class="text-[13px]">已建立</span></label>
+                            <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q2" class="custom-box radio"><span class="text-[13px]">建立中</span></label>
+                            <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q2" class="custom-box radio"><span class="text-[13px]">未建立</span></label>
+                        </div>
+                    </div>
+                    <div class="border border-brand-blue/10 p-3 rounded-md bg-gray-50/80">
+                        <div class="flex items-center space-x-2 mb-2.5"><h3 class="font-bold text-brand-blue text-[15px]">3. 資金運用力</h3><span class="text-[10px] text-brand-gold border border-brand-gold/50 px-1.5 py-0.5 rounded">提升資金效率</span></div>
+                        <div class="flex space-x-5">
+                            <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q3" class="custom-box radio"><span class="text-[13px]">已建立</span></label>
+                            <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q3" class="custom-box radio"><span class="text-[13px]">建立中</span></label>
+                            <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q3" class="custom-box radio"><span class="text-[13px]">未建立</span></label>
+                        </div>
+                    </div>
+                    <div class="border border-brand-blue/10 p-3 rounded-md bg-gray-50/80">
+                        <div class="flex items-center space-x-2 mb-2.5"><h3 class="font-bold text-brand-blue text-[15px]">4. 資產活化力</h3><span class="text-[10px] text-brand-gold border border-brand-gold/50 px-1.5 py-0.5 rounded">建立退休現金流</span></div>
+                        <div class="flex space-x-5">
+                            <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q4" class="custom-box radio"><span class="text-[13px]">已建立</span></label>
+                            <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q4" class="custom-box radio"><span class="text-[13px]">建立中</span></label>
+                            <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="q4" class="custom-box radio"><span class="text-[13px]">未建立</span></label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="flex-grow flex flex-col justify-between">
+                <h2 class="section-title mb-3">04 / 現金流分析 (每月) <span class="text-[11px] font-sans text-brand-blue/50 uppercase tracking-widest font-normal">Cash Flow</span></h2>
+                <div class="grid grid-cols-2 gap-10 mb-4">
+                    <div>
+                        <table class="w-full text-sm">
+                            <tr class="border-b border-brand-blue/20"><th class="text-left py-2 font-bold text-brand-blue">收入項目</th><th class="text-right py-2 font-bold text-brand-blue w-32 pr-4">金額 (元)</th></tr>
+                            <tr><td class="py-2">薪資收入</td><td><input type="text" class="form-input text-right cf-income currency-input font-bold" placeholder="0"></td></tr>
+                            <tr><td class="py-2">獎金 / 分紅</td><td><input type="text" class="form-input text-right cf-income currency-input font-bold" placeholder="0"></td></tr>
+                            <tr><td class="py-2">投資 / 股息</td><td><input type="text" class="form-input text-right cf-income currency-input font-bold" placeholder="0"></td></tr>
+                            <tr><td class="py-2">租金收入</td><td><input type="text" class="form-input text-right cf-income currency-input font-bold" placeholder="0"></td></tr>
+                            <tr><td class="py-2">其他收入</td><td><input type="text" class="form-input text-right cf-income currency-input font-bold" placeholder="0"></td></tr>
+                        </table>
+                    </div>
+                    <div>
+                        <table class="w-full text-sm">
+                            <tr class="border-b border-brand-blue/20"><th class="text-left py-2 font-bold text-brand-blue">支出項目</th><th class="text-right py-2 font-bold text-brand-blue w-32 pr-4">金額 (元)</th></tr>
+                            <tr><td class="py-2">房貸 / 房租</td><td><input type="text" class="form-input text-right cf-expense currency-input font-bold" placeholder="0"></td></tr>
+                            <tr><td class="py-2">車貸 / 交通</td><td><input type="text" class="form-input text-right cf-expense currency-input font-bold" placeholder="0"></td></tr>
+                            <tr><td class="py-2">生活總開銷</td><td><input type="text" class="form-input text-right cf-expense currency-input font-bold" placeholder="0"></td></tr>
+                            <tr><td class="py-2">保險費攤提</td><td><input type="text" class="form-input text-right cf-expense currency-input font-bold" placeholder="0"></td></tr>
+                            <tr><td class="py-2">子女教育費</td><td><input type="text" class="form-input text-right cf-expense currency-input font-bold" placeholder="0"></td></tr>
+                            <tr><td class="py-2">其他支出</td><td><input type="text" class="form-input text-right cf-expense currency-input font-bold" placeholder="0"></td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="bg-brand-blue text-white p-3.5 rounded-md flex justify-between items-center shadow-md shrink-0 mb-1">
+                    <span class="font-bold tracking-widest text-[15px]">每月現金流結餘 (收入 - 支出)</span>
+                    <span class="font-bold text-brand-gold text-xl pr-4">$ <span id="cf-balance">0</span></span>
+                </div>
+            </section>
+        </div>
+
+        <!-- ======================= -->
+        <!-- 第二頁 PAGE 2 -->
+        <!-- ======================= -->
+        <div class="a4-page" id="page-2">
+            
+            <section class="mb-5 shrink-0 mt-1">
+                <h2 class="section-title mb-3">05 / 財務資產負債表 <span class="text-[11px] font-sans text-brand-blue/50 uppercase tracking-widest font-normal">Balance Sheet</span></h2>
+                <div class="grid grid-cols-2 gap-10">
+                    <div>
+                        <table class="w-full text-sm">
+                            <tr class="border-b border-brand-blue/20"><th class="text-left py-1.5 font-bold text-brand-blue">資產項目</th><th class="text-right py-1.5 font-bold text-brand-blue w-32 pr-4">現值金額 (元)</th></tr>
+                            <tr><td class="py-1.5">流動現金 / 存款</td><td><input type="text" class="form-input text-right bs-asset currency-input font-bold" placeholder="0"></td></tr>
+                            <tr><td class="py-1.5">投資部位 (股票/基金)</td><td><input type="text" class="form-input text-right bs-asset currency-input font-bold" placeholder="0"></td></tr>
+                            <tr><td class="py-1.5">不動產現值</td><td><input type="text" class="form-input text-right bs-asset currency-input font-bold" placeholder="0"></td></tr>
+                            <tr><td class="py-1.5">保單價值準備金</td><td><input type="text" class="form-input text-right bs-asset currency-input font-bold" placeholder="0"></td></tr>
+                            <tr><td class="py-1.5">其他資產</td><td><input type="text" class="form-input text-right bs-asset currency-input font-bold" placeholder="0"></td></tr>
+                        </table>
+                    </div>
+                    <div class="flex flex-col justify-between">
+                        <table class="w-full text-sm">
+                            <tr class="border-b border-brand-blue/20"><th class="text-left py-1.5 font-bold text-brand-blue">負債項目</th><th class="text-right py-1.5 font-bold text-brand-blue w-32 pr-4">剩餘餘額 (元)</th></tr>
+                            <tr><td class="py-1.5">房屋貸款</td><td><input type="text" class="form-input text-right bs-liability currency-input font-bold" placeholder="0"></td></tr>
+                            <tr><td class="py-1.5">信用 / 汽車貸款</td><td><input type="text" class="form-input text-right bs-liability currency-input font-bold" placeholder="0"></td></tr>
+                            <tr><td class="py-1.5">信用卡循環/其他</td><td><input type="text" class="form-input text-right bs-liability currency-input font-bold" placeholder="0"></td></tr>
+                        </table>
+                        <div class="bg-brand-blue/5 border border-brand-blue/20 p-3 rounded-md mt-4">
+                            <div class="font-bold text-brand-blue text-[14px]">財務淨資產 (總資產 - 總負債)</div>
+                            <div class="font-bold text-brand-gold text-xl text-right mt-1.5 pr-4">$ <span id="bs-networth">0</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-6 shrink-0">
+                <h2 class="section-title mb-3">06 / 理財金三角配置 <span class="text-[11px] font-sans text-brand-blue/50 uppercase tracking-widest font-normal">Wealth Pyramid</span></h2>
+                <div class="grid grid-cols-2 gap-8 items-center bg-gray-50/50 p-4 rounded-lg border border-brand-blue/5">
+                    <div class="flex justify-center items-center h-[130px]">
+                        <svg width="160" height="130" viewBox="0 0 100 100" class="drop-shadow-sm">
+                            <polygon points="50,0 65,31 35,31" fill="#0B2341" />
+                            <text x="50" y="24" fill="white" font-size="7" font-weight="bold" text-anchor="middle">成長層</text>
+                            <polygon points="34,33 66,33 83,65 17,65" fill="#B89B5E" />
+                            <text x="50" y="52" fill="white" font-size="7" font-weight="bold" text-anchor="middle">穩定層</text>
+                            <polygon points="15.5,67 84.5,67 100,99 0,99" fill="#F5F6F8" stroke="#0B2341" stroke-width="0.5"/>
+                            <text x="50" y="86" fill="#0B2341" font-size="7" font-weight="bold" text-anchor="middle">安全層</text>
+                        </svg>
+                    </div>
+                    <div class="text-[13px] text-brand-blue/90 space-y-4 pr-2">
+                        <div>
+                            <div class="flex items-center text-brand-blue font-bold mb-1"><div class="w-2 h-2 rounded bg-brand-blue mr-2"></div>成長層 (追求資產增值)</div>
+                            <p class="pl-4 text-[12px] leading-relaxed text-brand-blue/70">股票、基金、ETF、房地產、創業投資</p>
+                        </div>
+                        <div>
+                            <div class="flex items-center text-brand-gold font-bold mb-1"><div class="w-2 h-2 rounded bg-brand-gold mr-2"></div>穩定層 (追求穩定現金流)</div>
+                            <p class="pl-4 text-[12px] leading-relaxed text-brand-blue/70">穩健型基金、儲蓄險、固定收益、配息資產</p>
+                        </div>
+                        <div>
+                            <div class="flex items-center text-gray-500 font-bold mb-1"><div class="w-2 h-2 rounded border border-brand-blue mr-2"></div>安全層 (轉嫁重大風險)</div>
+                            <p class="pl-4 text-[12px] leading-relaxed text-brand-blue/70">醫療保障、壽險、長照、緊急預備金</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="grid grid-cols-2 gap-10 flex-grow mb-1">
+                <!-- 左半部 -->
+                <div class="flex flex-col space-y-6">
+                    <section class="shrink-0">
+                        <h2 class="section-title text-base mb-3 border-b-2">07 / 風險缺口檢測</h2>
+                        <table class="w-full text-sm text-center">
+                            <tr class="text-brand-blue border-b border-brand-blue/20">
+                                <th class="text-left pb-1 font-bold w-[35%]">風險項目</th>
+                                <th class="pb-1 w-[15%] text-xs text-brand-blue/70 whitespace-nowrap">已規劃</th>
+                                <th class="pb-1 w-[15%] text-xs text-brand-blue/70 whitespace-nowrap">未規劃</th>
+                                <th class="pb-1 text-right font-bold w-[35%] pr-4">已準備金額</th>
+                            </tr>
+                            <script>
+                                const risks = ['醫療風險', '重大疾病', '長期照護', '家庭責任(壽險)', '緊急預備金'];
+                                risks.forEach((risk, i) => {
+                                    document.write(`
+                                        <tr class="border-b border-gray-100 last:border-0 hover:bg-gray-50">
+                                            <td class="text-left py-2 font-medium text-brand-blue/80 whitespace-nowrap">${risk}</td>
+                                            <td class="py-2"><input type="radio" name="risk_${i}" class="custom-box radio"></td>
+                                            <td class="py-2"><input type="radio" name="risk_${i}" class="custom-box radio"></td>
+                                            <td class="py-2 text-right"><input type="text" class="form-input text-right text-xs currency-input font-bold !py-0.5 !pr-4" placeholder="0"></td>
+                                        </tr>
+                                    `);
+                                });
+                            </script>
+                        </table>
+                    </section>
+                    
+                    <section class="flex flex-col flex-grow">
+                        <h2 class="section-title text-base mb-3 border-b-2">08 / 退休生活規劃</h2>
+                        <div class="space-y-2 mt-1 flex-grow flex flex-col">
+                            <div class="flex justify-between items-center border-b border-brand-blue/10 pb-1.5">
+                                <label class="text-sm font-bold text-brand-blue">預計退休年齡</label>
+                                <div class="flex items-center"><input type="number" class="form-input text-right w-16 font-bold !py-0 text-brand-gold !pr-4" placeholder="65"><span class="ml-1 text-sm text-brand-blue/70">歲</span></div>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-brand-blue/10 pb-1.5">
+                                <label class="text-sm font-bold text-brand-blue">期望退休月生活費</label>
+                                <div class="flex items-center"><span class="mr-2 text-sm text-brand-gold font-bold">$</span><input type="text" class="form-input text-right w-24 currency-input font-bold !py-0 text-brand-gold !pr-4" placeholder="50,000"></div>
+                            </div>
+                            <div class="pt-2 flex-grow flex flex-col">
+                                <label class="text-[13px] font-bold block mb-1.5 text-brand-blue/80">期望退休後生活方式描述</label>
+                                <textarea class="w-full flex-grow bg-white border border-gray-300 rounded p-2.5 text-sm text-brand-blue focus:border-brand-gold focus:outline-none resize-none shadow-sm" placeholder="例如：每年出國兩次、從事志工活動..."></textarea>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- 右半部 -->
+                <div class="flex flex-col h-full">
+                    <section class="flex-grow flex flex-col bg-brand-blue text-white rounded-lg p-5 border-t-4 border-t-brand-gold shadow-md overflow-hidden">
+                        <h2 class="text-lg font-serif text-brand-gold border-b border-brand-gold/30 pb-2 mb-4 flex items-center justify-between font-bold shrink-0">
+                            09 / 顧問診斷總評
+                            <span class="text-[10px] font-sans text-white/40 tracking-widest uppercase">Summary</span>
+                        </h2>
+                        
+                        <div class="flex flex-col flex-grow justify-between">
+                            <div class="mb-5 shrink-0">
+                                <table class="w-full text-[14px] text-white/90">
+                                    <tr class="border-b border-white/20">
+                                        <th class="text-left pb-1.5 font-normal text-white/50 text-xs">評估指標</th>
+                                        <th class="text-center pb-1.5 font-normal text-white/50 text-xs w-10">價值</th>
+                                        <th class="text-center pb-1.5 font-normal text-brand-gold text-xs w-14">得分</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 text-xs">現金流健康度</td><td class="text-center text-xs">30</td>
+                                        <td class="text-center"><input type="number" class="score-input w-12 bg-transparent border-b border-white/30 text-center text-brand-gold font-bold focus:border-brand-gold focus:outline-none py-1 !pr-0" value="0"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 text-xs">資產配置比例</td><td class="text-center text-xs">30</td>
+                                        <td class="text-center"><input type="number" class="score-input w-12 bg-transparent border-b border-white/30 text-center text-brand-gold font-bold focus:border-brand-gold focus:outline-none py-1 !pr-0" value="0"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 text-xs">風險防護網</td><td class="text-center text-xs">20</td>
+                                        <td class="text-center"><input type="number" class="score-input w-12 bg-transparent border-b border-white/30 text-center text-brand-gold font-bold focus:border-brand-gold focus:outline-none py-1 !pr-0" value="0"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 text-xs">理財目標進度</td><td class="text-center text-xs">20</td>
+                                        <td class="text-center"><input type="number" class="score-input w-12 bg-transparent border-b border-white/30 text-center text-brand-gold font-bold focus:border-brand-gold focus:outline-none py-1 !pr-0" value="0"></td>
+                                    </tr>
+                                    <tr class="border-t border-brand-gold/30">
+                                        <td class="py-2.5 font-bold text-sm">綜合診斷評分</td><td class="text-center font-bold text-sm">100</td>
+                                        <td class="text-center font-bold text-brand-gold text-2xl pr-2" id="total-score-display">0</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <div class="shrink-0 bg-white/5 p-4 rounded mb-auto">
+                                <label class="block text-xs font-bold text-brand-gold mb-3">顧問判定目前主力階段：</label>
+                                <div class="grid grid-cols-2 gap-y-3.5 gap-x-2">
+                                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="custom-box radio border-white/50"><span class="text-xs text-white/90">財富累積期</span></label>
+                                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="custom-box radio border-white/50"><span class="text-xs text-white/90">資產成長期</span></label>
+                                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="custom-box radio border-white/50"><span class="text-xs text-white/90">資金運用期</span></label>
+                                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="custom-box radio border-white/50"><span class="text-xs text-white/90">財富自由期</span></label>
+                                </div>
+                            </div>
+                            
+                            <!-- 專屬簽名 (完美還原高度不破版，已更改為 Yang Han Yu) -->
+                            <div class="mt-3 flex flex-col items-end pt-2 shrink-0">
+                                <span class="text-[10px] text-white/60 tracking-widest mb-0.5">RFC國際認證財務顧問</span>
+                                <span class="text-brand-gold text-2xl border-b border-brand-gold/50 px-6 pb-1 font-signature leading-none tracking-wide">Yang Han Yu</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+
+    <script>
+        function formatCurrency(num) { return num.toLocaleString('en-US'); }
+        function parseCurrency(str) {
+            const val = parseFloat(str.replace(/,/g, ''));
+            return isNaN(val) ? 0 : val;
+        }
+
+        document.querySelectorAll('.currency-input').forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.value !== '') this.value = formatCurrency(parseCurrency(this.value));
+                calculateFinancials();
+            });
+            input.addEventListener('focus', function() {
+                if (this.value !== '') this.value = parseCurrency(this.value);
+            });
+        });
+
+        function calculateFinancials() {
+            let income = 0; let expense = 0;
+            document.querySelectorAll('.cf-income').forEach(el => income += parseCurrency(el.value));
+            document.querySelectorAll('.cf-expense').forEach(el => expense += parseCurrency(el.value));
+            document.getElementById('cf-balance').innerText = formatCurrency(income - expense);
+
+            let assets = 0; let liabilities = 0;
+            document.querySelectorAll('.bs-asset').forEach(el => assets += parseCurrency(el.value));
+            document.querySelectorAll('.bs-liability').forEach(el => liabilities += parseCurrency(el.value));
+            document.getElementById('bs-networth').innerText = formatCurrency(assets - liabilities);
+        }
+
+        function calculateScore() {
+            let total = 0;
+            document.querySelectorAll('.score-input').forEach(el => {
+                let val = parseInt(el.value);
+                total += isNaN(val) ? 0 : val;
+            });
+            document.getElementById('total-score-display').innerText = total;
+        }
+        document.querySelectorAll('.score-input').forEach(input => input.addEventListener('input', calculateScore));
+    </script>
+</body>
+</html>
